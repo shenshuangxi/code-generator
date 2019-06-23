@@ -1,0 +1,64 @@
+package ${package}.settlement.domain.service;
+
+import ${package}.settlement.dto.${className}4PageListDto;
+import ${package}.settlement.dto.${className}4AllDto;
+import com.matrix.framework.exception.BusinessException;
+import com.matrix.framework.query.sql.model.PageableRequest;
+import com.matrix.framework.query.sql.model.PageableResponse;
+import lombok.NonNull;
+
+ /**
+ * 
+		* ${comments}
+		* @author zhonghuixiong
+		* @version ${datetime}
+		* @see ${className}Service
+		* @since
+ */
+public interface I${className}Service {
+	/**
+	 * 分页查询${moduleCnName}
+	 * Description:
+	 *
+	 * @param pageReq
+	 * @return
+	 * @throws BusinessException 
+	 * @see
+	 */
+	PageableResponse<${className}4PageListDto> findPage(@NonNull PageableRequest pageReq) throws BusinessException;
+	
+	
+	/**
+	 * 
+	 * <p>Title: save</p>  
+	 * <p>Description: ${moduleCnName}保存或者修改</p>  
+	 * @author zhonghuixiong 
+	 * @date ${datetime}
+	 * @param ${className}4AllDto
+	 * @return
+	 * @throws BusinessException 
+	 */
+	${className}4AllDto save(@NonNull ${className}4AllDto ${className}Dto) throws BusinessException;
+	
+	/**
+	 * 
+	 * <p>Title: deleteById</p>  
+	 * <p>Description: 如果新建就截止删除，其他状态就修改启用标识</p>  
+	 * @author zhonghuixiong 
+	 * @date ${datetime}
+	 * @param id
+	 * @throws BusinessException 
+	 */
+	void deleteById(@NonNull Long id) throws BusinessException;
+	
+	/**
+	 * 
+	 * <p>Title: findDtoById</p>  
+	 * <p>Description: 通过id查找</p>  
+	 * @author zhonghuixiong 
+	 * @date ${datetime}
+	 * @param id
+	 * @return
+	 */
+	${className}4AllDto findDtoById(@NonNull Long id);
+}

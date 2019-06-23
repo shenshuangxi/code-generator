@@ -1,0 +1,34 @@
+# Tomcat
+server:
+    tomcat:
+        max-threads: 10
+        min-spare-threads: 10
+    port: 7777
+
+logging:
+    level:
+        tk.mybatis: DEBUG
+        com.gz.platform.generator: DEBUG
+    file: generator-server.log    
+    
+# mysql
+#spring:
+#    datasource:
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        driverClassName: com.mysql.jdbc.Driver
+#        url: jdbc:mysql://192.168.1.100:3306/erp_customer_dev?useUnicode=true&characterEncoding=UTF-8
+#        username: ibm
+#        password: 12345678
+#    jackson:
+#        time-zone: GMT+8
+#        date-format: yyyy-MM-dd HH:mm:ss
+#    thymeleaf:
+#        mode: LEGACYHTML5
+#        cache: false
+
+# Mybatis配置
+mybatis:
+    mapperLocations: classpath:mapper/**/*.xml
+    
+datasourceHeader: datasourceHeader
+

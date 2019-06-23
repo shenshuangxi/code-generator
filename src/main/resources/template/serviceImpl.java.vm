@@ -1,0 +1,95 @@
+package ${package}.settlement.domain.service.impl;
+
+import javax.annotation.Resource;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ${package}.settlement.domain.service.CommonService;
+import ${package}.settlement.domain.service.I${className}Service;
+import ${package}.settlement.dto.${className}4PageListDto;
+import ${package}.settlement.dto.${className}4AllDto;
+import ${package}.settlement.infra.constant.Constant;
+import ${package}.settlement.infra.entity.${className}Entity;
+import com.matrix.framework.exception.BusinessException;
+import com.matrix.framework.query.service.QueryService;
+import com.matrix.framework.query.sql.model.PageableRequest;
+import com.matrix.framework.query.sql.model.PageableResponse;
+import com.matrix.framework.query.sql.model.QueryRequest;
+import com.matrix.framework.repository.service.GeneralCrudRepositoryService;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+
+ /**
+ * 
+ * ${moduleCnName}Service
+ * 
+ * @author zhonghuixiong
+ * @version ${datetime}
+ * @see ${className}ServiceImpl
+ * @since
+ */
+@Service
+@AllArgsConstructor
+@Transactional
+public class ${className}ServiceImpl implements I${className}Service{
+
+    private static final String ${upCaseModuleName}_MYBATIS_SELECT_${upCaseModuleName}_PAGE = "${mainModule}.mybatis.${lowCaseModuleName}.select${className}Page";
+	private static final String ${upCaseModuleName}_MYBATIS_FIND_DTO_BY_ID = "${mainModule}.mybatis.${lowCaseModuleName}.findDtoById";
+
+	@Resource
+	private GeneralCrudRepositoryService generalCrudRepositoryService;
+	@Resource
+	private CommonService commonService;
+
+	@Resource
+	private QueryService queryService;
+
+	@Override
+	public PageableResponse<${className}4PageListDto> findPage(@NonNull PageableRequest pageReq) throws BusinessException {
+		QueryRequest queryRequest = pageReq.getQueryRequest();
+		if (null != queryRequest) {
+			queryRequest.setQueryId(${upCaseModuleName}_MYBATIS_SELECT_${upCaseModuleName}_PAGE);
+		} else {
+			queryRequest = new QueryRequest(${upCaseModuleName}_MYBATIS_FIND_DTO_BY_ID);
+		}
+		PageableResponse<${className}4PageListDto> result = queryService.executePageableQuery(pageReq);
+		return result;
+	}
+
+	@Override
+	public ${className}4AllDto save(@NonNull ${className}4AllDto ${secondModuleName}Dto) throws BusinessException {
+		if (${secondModuleName}Dto.getId() == null) {
+			// 新增
+			${className}Entity ${secondModuleName}Entity = new ${className}Entity();
+			BeanUtils.copyProperties(${secondModuleName}Dto, ${secondModuleName}Entity);
+			${secondModuleName}Entity.setCode(commonService.encode("SET_MIS_RETRY"));
+			//${secondModuleName}Entity.setAvailability(Constant.Y);
+			${secondModuleName}Entity = this.generalCrudRepositoryService.save(${secondModuleName}Entity);
+			BeanUtils.copyProperties(${secondModuleName}Entity, ${secondModuleName}Dto);
+		} else {
+			${className}Entity ${secondModuleName}Entity = this.generalCrudRepositoryService.get(${className}Entity.class, ${secondModuleName}Dto.getId());
+			if (${secondModuleName}Entity == null) {
+				throw new BusinessException("获取实体失败");
+			}
+			BeanUtils.copyProperties(${secondModuleName}Dto, ${secondModuleName}Entity);
+		}
+		return ${secondModuleName}Dto;
+	}
+
+	@Override
+	public void deleteById(@NonNull Long id) throws BusinessException {
+		${className}Entity ${secondModuleName}Entity = generalCrudRepositoryService.get(${className}Entity.class, id);
+		if (${secondModuleName}Entity != null) {
+			//${secondModuleName}Entity.setAvailability(Constant.N);
+		}else {
+			throw new BusinessException("没有该条记录");
+		}
+	}
+
+	@Override
+	public ${className}4AllDto findDtoById(@NonNull Long id) {
+		QueryRequest queryRequest = new QueryRequest(${upCaseModuleName}_MYBATIS_FIND_DTO_BY_ID);
+		queryRequest.getQueryConditions().put("id", id);
+		return (${className}4AllDto) this.queryService.executeQuery(queryRequest).stream().findFirst().orElse(null);
+	}
+}

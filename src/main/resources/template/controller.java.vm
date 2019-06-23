@@ -1,0 +1,75 @@
+package ${package}.settlement.controller;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gz.erp.settlement.domain.service.I${className}Service;
+import com.gz.erp.settlement.dto.${className}4AllDto;
+import com.gz.erp.settlement.dto.${className}4PageListDto;
+import com.matrix.framework.exception.BusinessException;
+import com.matrix.framework.query.sql.model.PageableRequest;
+import com.matrix.framework.query.sql.model.PageableResponse;
+import com.matrix.framework.webapi.model.RestfulApiResponse;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+/**
+ * 
+ * <p>Title: ${className}Controller.java</p>  
+ * <p>Description: ${moduleCnName}API</p>  
+ * <p>Copyright: Copyright (c) 2019</p>  
+ * @author zhonghuixiong 
+ * @date ${datetime}
+ * @version 1.0
+ */
+ 
+@Api(value = "${moduleCnName}", tags = "${moduleCnName}接口")
+@RestController
+@RequestMapping("/${secondModuleName}")
+public class ${className}Controller {
+	@Autowired
+	private I${className}Service ${secondModuleName}Service;
+	
+	@PostMapping(value = "/page", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @ApiOperation(value = "${moduleCnName}分页列表", response = RestfulApiResponse.class)
+    public RestfulApiResponse<PageableResponse<${className}4PageListDto>> findPagePlanHeaderByPageReq(@RequestBody PageableRequest pageReq) throws BusinessException {
+        PageableResponse<${className}4PageListDto> dtoPage = ${secondModuleName}Service.findPage(pageReq);
+        return RestfulApiResponse.buildSuccessRestfulApiResponse(dtoPage);
+    }
+	
+	@GetMapping(value = "/getBy/{id}")
+    @ApiOperation(value = "通过id获取${moduleCnName}", response = RestfulApiResponse.class)
+    public RestfulApiResponse<${className}4AllDto> findById(@PathVariable("id") String id) throws BusinessException {
+		${className}4AllDto ${secondModuleName}Dto = null;
+		if(StringUtils.isNotBlank(id)) {
+			${secondModuleName}Dto = ${secondModuleName}Service.findDtoById(Long.parseLong(id));
+		}
+		return RestfulApiResponse.buildSuccessRestfulApiResponse(${secondModuleName}Dto);
+    }
+	
+	@PostMapping(value = "/save", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @ApiOperation(value = "${moduleCnName}保存/修改", response = RestfulApiResponse.class)
+    public RestfulApiResponse<${className}4AllDto> save(@RequestBody ${className}4AllDto ${secondModuleName}Dto) throws BusinessException {
+        return RestfulApiResponse.buildSuccessRestfulApiResponse(${secondModuleName}Service.save(${secondModuleName}Dto));
+    }
+	
+	
+	@DeleteMapping(value = "/delete/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	@ApiOperation(value = "税率设置保存/修改", response = RestfulApiResponse.class)
+	public RestfulApiResponse<Boolean> deleteById(@PathVariable("id") String id) throws NumberFormatException, BusinessException{
+		if(StringUtils.isNotBlank(id)) {
+			${secondModuleName}Service.deleteById(Long.parseLong(id));
+		}
+		return RestfulApiResponse.buildSuccessRestfulApiResponse(Boolean.TRUE);
+	}
+	
+}

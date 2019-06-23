@@ -1,0 +1,32 @@
+package ${package}.settlement.dto;
+
+import lombok.Data;
+import java.util.Date;
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+ @Data
+ @ApiModel(value = "${className}4AllDto", description = "${className}4AllDto")
+public class ${className}4AllDto {
+
+#foreach ($column in $columns)
+	#if($column.columnName == $pk.columnName)
+    @ApiModelProperty("主键")
+    private $column.attrType $column.attrname;
+	#else
+    @ApiModelProperty("$column.comments")
+    private $column.attrType $column.attrname;
+	#end
+
+#end
+}
